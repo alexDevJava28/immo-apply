@@ -1,0 +1,21 @@
+extends layout
+
+block layout-content
+  div.View.WelcomeView
+    h1.Banner IMMO APPLY
+
+    div.User
+      if user
+        p.CurrentUser= user.username
+      form(id="save-credentials" action="/save-credentials" method="post")
+            if errors
+              div.ErrorMsg= (errors.username ? errors.username.msg : "") + " " + (errors.password ? errors.password.msg : "")
+            input(type="text" name="username" placeholder="Enter username")
+            input(type="password" name="password" placeholder="Enter password")
+            input(type="submit" value="Save")
+
+    div.NavButtons
+      a(id="run-apply" href="javascrip:void(0);")
+        div(class="NavButton") Start apply!
+      a(href="/history")
+        div(class="NavButton history") History

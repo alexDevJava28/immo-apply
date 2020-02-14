@@ -1,0 +1,32 @@
+{
+  "name": "immo-apply",
+  "version": "1.0.0",
+  "description": "Applying appartments on Immobilen",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js",
+    "ui": "browser-sync start --proxy=localhost:8000 --files='**/*.css, **/*.pug, **/*.js' --ignore=node_modules --reload-delay 10 --no-ui --no-notify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexDevJava28/immo-apply.git"
+  },
+  "keywords": [],
+  "author": "Oleksii Khodakivskyi <oleksii.khodakivskyi.web@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://github.com/alexDevJava28/immo-apply.git",
+  "dependencies": {
+    "chromedriver": "2.45",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "forever-monitor": "^2.0.0",
+    "mongodb": "^3.5.2",
+    "mongoose": "^5.8.11",
+    "pug": "^2.0.4",
+    "selenium-webdriver": "^4.0.0-alpha.5"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "nodemon": "^2.0.2"
+  }
+}

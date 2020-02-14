@@ -1,0 +1,24 @@
+extends layout
+
+block layout-content
+  div.View.WelcomeView
+    h1.Banner HISTORY
+
+    div.TableWrapper
+      if history
+        table
+          thead
+            tr
+              th.column1 №
+              th.column2 Date
+              th.column3 Price
+              th.column4 Available from
+              th.column5 URL
+          tbody   
+            each row, index in history
+              tr
+                td(class="column1")= index + 1
+                td(class="column2")= row.date
+                td(class="column3")= row.price
+                td(class="column4")= row.available
+                td(class="column5")= row.link
