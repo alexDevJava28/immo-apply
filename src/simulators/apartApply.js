@@ -3,7 +3,7 @@ require('chromedriver');
 const {Builder, By, Key, until, Capabilities} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const fs = require('fs');
-const config = require('./config.json');
+const config = require('./../../config.json');
 
 let applyApart = {
     driver: null,
@@ -19,13 +19,20 @@ let applyApart = {
         ];
 
         this.driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().addArguments(chromeOptions)).build();
-          
+
+        self.startPage();    
+
+    },
+    startPage: async function() {
+
+        const self = this;
+
         try {
-            await this.driver.get('https://www.immobilienscout24.de/');
+            await self.driver.get('https://www.immobilienscout24.de/');
 
             const loginLink = By.css('a.one-whole.sso-login-link.sso-login-link--no-parameters');
 
-            self.driver.sleep(2000).then(function() {
+            self.driver.sleep(5000).then(function() {
 
                 self.driver.findElement(loginLink).then(btn => {
                     
@@ -45,9 +52,11 @@ let applyApart = {
     
             });
             
+        } catch(e) {
+            console.log(e);
+            self.startPage();
         } finally {
             //await driver.quit();
-            return;
         }
 
     },
@@ -70,6 +79,8 @@ let applyApart = {
 
         }, function(error) {
             console.log('Can\'t find google login link by xpath - //div[@id="googleButtonLinkLogin"]/a');
+
+            self.runSavedSearch();
         });
 
     },
@@ -145,7 +156,7 @@ let applyApart = {
         
                         self.driver.wait(until.urlContains('/savedsearch/myscout/manage/'), 2000).then(function() {
         
-                            const mainSearch = By.xpath('//a[contains(@class, "savedsearch-106712117-show")]');
+                            const mainSearch = By.xpath('//a[contains(@class, "savedsearch-106755207-show")]');
         
                             self.driver.findElement(mainSearch).then(btn => {
                             
@@ -270,6 +281,8 @@ let applyApart = {
             });
         }, function(error) {
             console.log('List not found by xpath - //ul[@id="resultListItems"]');
+
+            self.startPage();
         });
     },
     sendRequest: function(start) {
@@ -293,7 +306,7 @@ let applyApart = {
 
                         //console.log(text);
 
-                        await self.driver.findElement(textarea).sendKeys(Key.BACK_SPACE);
+                        await self.driver.findElement(textarea).clear();
                         await self.driver.findElement(textarea).sendKeys(text);
 
                         self.driver.sleep(3000).then(function() {
@@ -302,7 +315,7 @@ let applyApart = {
                         
                                 self.driver.executeScript("arguments[0].click();", sbtn).then(function() {
         
-                                    self.driver.sleep(3000).then(function() {
+                                    self.driver.sleep(8000).then(function() {
                                         self.driver.navigate().back().then(self.findNewAparts(start++));
                                     });
                                 

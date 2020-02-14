@@ -84,6 +84,8 @@ app.post("/save-credentials", [
 
 app.get("/run-apply", (req, res) => {
     apartApply.run();
+
+    res.redirect('/');
 });
 
 /**

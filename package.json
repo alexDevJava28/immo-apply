@@ -16,7 +16,7 @@
   "license": "ISC",
   "homepage": "https://github.com/alexDevJava28/immo-apply.git",
   "dependencies": {
-    "chromedriver": "2.45",
+    "chromedriver": "^78.0.1",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "forever-monitor": "^2.0.0",
