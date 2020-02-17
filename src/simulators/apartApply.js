@@ -69,7 +69,7 @@ let applyApart = {
                     
             self.driver.executeScript("arguments[0].click();", btn).then(function() {
 
-                self.driver.wait(until.urlContains('/signin/oauth/oauthchooseaccount?'), 2000).then(self.googleLoggIn(), function(error) {
+                self.driver.wait(until.urlContains('/signin/oauth/oauthchooseaccount?'), 5000).then(self.googleLoggIn(), function(error) {
                     console.log('Google login page not loading');
                 });
 
@@ -114,7 +114,7 @@ let applyApart = {
                                     });
         
                                 }, function(error) {
-                                    console.log('oogle account password link next not clickable');
+                                    console.log('Google account password link next not clickable');
                                 });
         
                             }, function(error) {
@@ -162,7 +162,7 @@ let applyApart = {
                             
                                 self.driver.executeScript("arguments[0].click();", btn).then(function() {
                     
-                                    self.driver.wait(until.urlContains('/Suche/shape/wohnung-mieten?'), 2000).then(self.findNewAparts(), function(error) {
+                                    self.driver.wait(until.urlContains('/Suche/shape/wohnung-mieten?'), 2000).then(self.sortByNew(), function(error) {
                                         console.log('Main search not loading');
                                     });
                     
@@ -188,6 +188,68 @@ let applyApart = {
 
         }, function(error) {
             console.log('Can\'t find saved searches link by xpath - //div[contains(@class, "SavedSearches")]/a');
+        });
+
+    },
+    sortByNew: function() {
+
+        const self = this;
+        const sortLink = By.xpath('//button[contains(@class, "sorting-label")]');
+
+        self.driver.wait(until.elementLocated(sortLink), 8000).then(function() {
+
+            self.driver.sleep(3000).then(function() {
+
+                self.driver.findElement(sortLink).then(btn => {
+
+                    self.driver.executeScript("arguments[0].click();", btn).then(function() {
+
+                        self.driver.sleep(3000).then(function() {
+
+                            let setSort = function() {
+                                function getElementByXpath(path) {
+                                    return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                                }
+                                  
+                                console.log( getElementByXpath('//div[contains(@class, "sorting-dropdown")]//div[contains(@class, "entry")][8]') );
+                                  
+                                getElementByXpath('//div[contains(@class, "sorting-dropdown")]//div[contains(@class, "entry")][8]').click();
+                            };
+                
+                            self.driver.executeScript(setSort).then(function() {
+                                self.driver.sleep(3000).then(function() {
+                                    self.findNewAparts();
+                                });
+                            });
+
+                            self.driver.findElement(sortByNewLink).then(btn => {
+
+                                self.driver.executeScript("arguments[0].click();", btn).then(function() {
+
+                                    console.log('clicked on sort');
+
+                                    self.driver.sleep(4000).then(self.findNewAparts());
+
+                                });
+
+                            });
+
+                        });
+        
+                    }, function(error) {
+                        console.log('sort link not clickable');
+
+                        self.findNewAparts();
+                    });
+
+                });
+
+            });
+
+        }, function(error) {
+            console.log('Sort link not found by xpath - //button[contains(@class, "sorting-label")]');
+
+            self.findNewAparts();
         });
 
     },
@@ -300,29 +362,33 @@ let applyApart = {
 
                     const textarea = By.xpath('//textarea[@id="contactForm-Message"]');
 
-                    self.driver.wait(until.elementLocated(textarea), 3000).then(async function() {
+                    self.driver.wait(until.elementLocated(textarea), 3000).then(function() {
 
-                        var text = fs.readFileSync('./data/message.txt', 'utf8');
+                        self.driver.sleep(5000).then(async function() {
 
-                        //console.log(text);
+                            var text = fs.readFileSync('./data/message.txt', 'utf8');
 
-                        await self.driver.findElement(textarea).clear();
-                        await self.driver.findElement(textarea).sendKeys(text);
+                            //console.log(text);
 
-                        self.driver.sleep(3000).then(function() {
+                            await self.driver.findElement(textarea).clear();
+                            await self.driver.findElement(textarea).sendKeys(text);
 
-                            self.driver.findElement(sendBtn).then(sbtn => {
-                        
-                                self.driver.executeScript("arguments[0].click();", sbtn).then(function() {
-        
-                                    self.driver.sleep(8000).then(function() {
-                                        self.driver.navigate().back().then(self.findNewAparts(start++));
+                            self.driver.sleep(3000).then(function() {
+
+                                self.driver.findElement(sendBtn).then(sbtn => {
+                            
+                                    self.driver.executeScript("arguments[0].click();", sbtn).then(function() {
+            
+                                        self.driver.sleep(8000).then(function() {
+                                            self.driver.navigate().back().then(self.findNewAparts(start++));
+                                        });
+                                    
                                     });
-                                
+            
                                 });
-        
+                    
                             });
-                
+
                         });
 
                     }, function(error) {
