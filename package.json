@@ -22,7 +22,7 @@
     "forever-monitor": "^2.0.0",
     "mongodb": "^3.5.2",
     "mongoose": "^5.8.11",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "selenium-webdriver": "^4.0.0-alpha.5"
   },
   "devDependencies": {
