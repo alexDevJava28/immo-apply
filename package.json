@@ -26,7 +26,7 @@
     "selenium-webdriver": "^4.0.0-alpha.5"
   },
   "devDependencies": {
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.27.10",
     "nodemon": "^2.0.2"
   }
 }
